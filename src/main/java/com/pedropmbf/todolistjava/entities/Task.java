@@ -14,7 +14,7 @@ public class Task implements Serializable {
     public static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String title;
     private String description;
     private String status;
@@ -22,18 +22,18 @@ public class Task implements Serializable {
     public Task() {
     }
 
-    public Task(long id, String title, String description, String status) {
+    public Task(Long id, String title, String description, String status) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.status = status;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
