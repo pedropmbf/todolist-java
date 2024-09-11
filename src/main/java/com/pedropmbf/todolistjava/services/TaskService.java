@@ -26,4 +26,8 @@ public class TaskService {
     public Task insert(Task obj) {
         return repository.save(obj);
     }
+
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
 }
