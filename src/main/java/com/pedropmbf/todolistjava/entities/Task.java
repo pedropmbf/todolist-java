@@ -1,5 +1,6 @@
 package com.pedropmbf.todolistjava.entities;
 
+import com.pedropmbf.todolistjava.entities.enums.TaskStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,16 +18,16 @@ public class Task implements Serializable {
     private Long id;
     private String title;
     private String description;
-    private String status;
+    private Integer taskStatus;
 
     public Task() {
     }
 
-    public Task(Long id, String title, String description, String status) {
+    public Task(Long id, String title, String description, TaskStatus taskStatus) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.status = status;
+        setTaskStatus(taskStatus);
     }
 
     public Long getId() {
@@ -53,12 +54,14 @@ public class Task implements Serializable {
         this.description = description;
     }
 
-    public String getStatus() {
-        return status;
+    public TaskStatus getTaskStatus() {
+        return TaskStatus.valueOf(taskStatus);
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setTaskStatus(TaskStatus taskStatus) {
+        if (taskStatus != null) {
+            this.taskStatus = taskStatus.getCode();
+        }
     }
 
     @Override
@@ -66,11 +69,11 @@ public class Task implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && Objects.equals(title, task.title) && Objects.equals(description, task.description) && Objects.equals(status, task.status);
+        return id == task.id && Objects.equals(title, task.title) && Objects.equals(description, task.description) && Objects.equals(taskStatus, task.taskStatus);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, status);
+        return Objects.hash(id, title, description, taskStatus);
     }
 }
