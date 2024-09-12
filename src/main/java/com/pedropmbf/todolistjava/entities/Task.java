@@ -24,10 +24,21 @@ public class Task implements Serializable {
     }
 
     public Task(Long id, String title, String description, TaskStatus taskStatus) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        setTaskStatus(taskStatus);
+        if (title != null) {
+            this.title = title;
+        }else{
+            throw new IllegalArgumentException("Title should not be null");
+        }
+        if (description != null) {
+            this.description = description;
+        }else {
+            throw new IllegalArgumentException("Description should not be null");
+        }
+        if (taskStatus != null) {
+            setTaskStatus(taskStatus);
+        }else {
+            throw new IllegalArgumentException("TaskStatus should not be null");
+        }
     }
 
     public Long getId() {
