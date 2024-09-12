@@ -28,7 +28,11 @@ public class TaskService {
     }
 
     public Task insert(Task obj) {
-        return repository.save(obj);
+        try {
+            return repository.save(obj);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException(e.getMessage());
+        }
     }
 
     public Task fromDto(TaskDto objDto) {
