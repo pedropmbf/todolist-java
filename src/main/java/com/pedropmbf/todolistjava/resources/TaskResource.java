@@ -44,4 +44,12 @@ public class TaskResource {
        service.delete(id);
        return ResponseEntity.noContent().build();
     }
+
+    //Endpoint to update tasks
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Task> update(@PathVariable Long id, @RequestBody Task obj) {
+       obj = service.update(id, obj);
+        return ResponseEntity.ok().body(obj);
+    }
+
 }
