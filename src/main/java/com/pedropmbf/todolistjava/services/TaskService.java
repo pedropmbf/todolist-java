@@ -1,5 +1,6 @@
 package com.pedropmbf.todolistjava.services;
 
+import com.pedropmbf.todolistjava.dto.TaskDto;
 import com.pedropmbf.todolistjava.entities.Task;
 import com.pedropmbf.todolistjava.repositories.TaskRepository;
 import com.pedropmbf.todolistjava.services.exceptions.ResourceNotFoundException;
@@ -28,6 +29,10 @@ public class TaskService {
 
     public Task insert(Task obj) {
         return repository.save(obj);
+    }
+
+    public Task fromDto(TaskDto objDto) {
+        return new Task(objDto.getId(), objDto.getTitle(), objDto.getDescription(), objDto.getTaskStatus());
     }
 
     public void delete(Long id) {

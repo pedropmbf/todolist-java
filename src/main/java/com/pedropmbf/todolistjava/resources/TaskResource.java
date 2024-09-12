@@ -1,5 +1,6 @@
 package com.pedropmbf.todolistjava.resources;
 
+import com.pedropmbf.todolistjava.dto.TaskDto;
 import com.pedropmbf.todolistjava.entities.Task;
 import com.pedropmbf.todolistjava.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/tasks")
@@ -19,9 +21,10 @@ public class TaskResource {
 
     //Endpoint for get all tasks
     @GetMapping
-    public ResponseEntity<List<Task>> findAll() {
+    public ResponseEntity<List<TaskDto>> findAll() {
         List<Task> list = service.findAll();
-        return ResponseEntity.ok().body(list);
+        List<TaskDto> listDto = list.stream().map(x -> new TaskDto(x)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDto);
     }
     //Endpoint for search tasks from Id
     @GetMapping(value = "/{id}")
@@ -30,12 +33,13 @@ public class TaskResource {
         return ResponseEntity.ok().body(obj);
     }
 
-    //Endpoint for add tasks to the DataBase
+    //Endpoint to create tasks
     @PostMapping
-    public ResponseEntity<Task> insert(@RequestBody Task obj) {
+    public ResponseEntity<Void> insert(@RequestBody TaskDto objDto) {
+        Task obj = service.fromDto(objDto);
         obj = service.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-        return ResponseEntity.created(uri).body(obj);
+        return ResponseEntity.created(uri).build();
     }
 
     //Endpoint for delete tasks from Id
