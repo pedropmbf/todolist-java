@@ -23,6 +23,11 @@ public class Task implements Serializable {
     public Task() {
     }
 
+    public Task(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+
     public Task(Long id, String title, String description, TaskStatus taskStatus) {
         if (title != null) {
             this.title = title;

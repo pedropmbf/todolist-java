@@ -1,8 +1,11 @@
 package com.pedropmbf.todolistjava.resources;
 
 import com.pedropmbf.todolistjava.dto.TaskDto;
+import com.pedropmbf.todolistjava.dto.TaskRequestDto;
 import com.pedropmbf.todolistjava.entities.Task;
 import com.pedropmbf.todolistjava.services.TaskService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,12 +37,13 @@ public class TaskResource {
     }
 
     //Endpoint to create tasks
+    //usar o taskrequestDto
     @PostMapping
-    public ResponseEntity<Void> insert(@RequestBody TaskDto objDto) {
+    public ResponseEntity<TaskDto> insert(@NotNull @RequestBody TaskRequestDto objDto) {
         Task obj = service.fromDto(objDto);
-        obj = service.insert(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+        final var objSaved = service.insert(obj);
+        //URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+        return ResponseEntity.ok().body(new TaskDto(objSaved));
     }
 
     //Endpoint for delete tasks from Id
@@ -51,9 +55,9 @@ public class TaskResource {
 
     //Endpoint to update tasks
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Task> update(@PathVariable Long id, @RequestBody Task obj) {
-       obj = service.update(id, obj);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<TaskDto> update(@PathVariable Long id, @RequestBody TaskDto objDto) {
+        Task obj = service.updateFromDto(id, objDto);
+        return ResponseEntity.ok().build();
     }
 
 }
